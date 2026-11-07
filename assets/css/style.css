@@ -69,7 +69,7 @@ header.site{position:sticky;top:0;z-index:900;background:#fff;border-bottom:1px 
 /* ---------- Hero (store panel layout) ---------- */
 .hero{background:#fff;border-bottom:1px solid var(--line)}
 .hero .container{display:grid;grid-template-columns:400px 1fr;gap:0;padding:0;width:100%;max-width:none}
-.hero-panel{background:var(--navy);color:#fff;padding:52px 44px 52px max(3%,calc((100vw - 1280px)/2 + 12px))}
+.hero-panel{background:var(--navy);color:#fff;padding:52px 44px}
 .hero-panel .kicker{display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);padding:5px 12px;border-radius:99px;font-size:12px;font-weight:600;letter-spacing:.8px;text-transform:uppercase}
 .hero-panel h1{font-size:clamp(27px,3.2vw,38px);line-height:1.2;font-weight:800;margin:18px 0 12px}
 .hero-panel h1 span{color:#5fd383}
