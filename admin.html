@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — HB Traders Pharmacy</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="assets/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="admin-body">
+
+<!-- LOGIN -->
+<div id="loginView">
+  <div class="login-wrap">
+    <img src="assets/images/logo-icon-transparent.png" alt="HB Traders logo">
+    <h1>HB Traders — Admin</h1>
+    <p>Sign in to manage products, stock and store settings.</p>
+    <form id="loginForm">
+      <div class="field"><label for="adminPass">Password</label><input type="password" id="adminPass" placeholder="Enter admin password" autocomplete="current-password"></div>
+      <p class="form-error" id="loginError">Wrong password — please try again.</p>
+      <button class="btn btn-navy" type="submit" style="width:100%;justify-content:center"><span class="ic"><svg><use href="#i-lock"/></svg></span> Sign In</button>
+    </form>
+    <p style="margin-top:16px"><a href="index.html" style="color:var(--green-dark);font-weight:600">← Back to the store</a></p>
+  </div>
+</div>
+
+<!-- PANEL -->
+<div id="panelView" style="display:none">
+  <div class="admin-top"><div class="container">
+    <img src="assets/images/logo-icon-transparent.png" alt="">
+    <b>HB Traders — Admin Panel</b>
+    <span class="sp">
+      <a href="index.html" target="_blank" rel="noopener">View Store</a>
+      <a href="shop.html" target="_blank" rel="noopener">View Shop</a>
+      <button id="logoutBtn" type="button">Log Out</button>
+    </span>
+  </div></div>
+
+  <div class="container">
+    <div class="admin-stats">
+      <div class="stat"><b id="statTotal">0</b><span>Total products</span></div>
+      <div class="stat"><b id="statCats">0</b><span>Categories in use</span></div>
+      <div class="stat"><b id="statRx">0</b><span>Prescription items</span></div>
+      <div class="stat"><b id="statOut">0</b><span>Out of stock</span></div>
+      <div class="stat"><b id="statLow">0</b><span>Low stock — order soon</span></div>
+      <div class="stat"><b id="statOrders">0</b><span>Orders from this device</span></div>
+    </div>
+
+    <div class="admin-card">
+      <h2>Products</h2>
+      <p class="hint">Add, edit or remove products. Changes save in this browser and appear on the store immediately. To make changes permanent for every visitor, use Export and send the file to your developer (or follow the README).</p>
+      <div class="toolbar">
+        <div class="search-box"><span class="ic" style="width:17px;height:17px"><svg><use href="#i-search"/></svg></span><input type="search" id="adminSearch" placeholder="Search products by name, brand, code…"></div>
+        <button class="btn btn-green" id="addProductBtn" type="button"><span class="ic"><svg><use href="#i-plus"/></svg></span> Add Product</button>
+      </div>
+      </div>
+      <div class="bulk-bar">
+        <select id="adminCatFilter" aria-label="Filter by category"></select>
+        <span id="selCount" style="color:var(--muted);font-size:13px">0 selected</span>
+        <button class="mini-btn" id="bulkIn" type="button">Set In Stock</button>
+        <button class="mini-btn" id="bulkLow" type="button">Set Low</button>
+        <button class="mini-btn" id="bulkOut" type="button">Set Out</button>
+        <button class="mini-btn danger" id="bulkDel" type="button">Delete Selected</button>
+      </div>
+      <p class="hint" style="margin-bottom:10px">Tip: click the stock label in any row to change it quickly (In → Low → Out). Tick the boxes to change many products at once.</p>
+      <div style="overflow-x:auto">
+      <table class="admin-table">
+        <thead><tr><th><input type="checkbox" id="checkAll" aria-label="Select all"></th><th>Image</th><th>Product</th><th>Category</th><th>Stock</th><th>Rx</th><th>Featured</th><th>Actions</th></tr></thead>
+        <tbody id="adminTableBody"></tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="admin-card" id="editCard" style="display:none">
+      <h2 id="editTitle">Add product</h2>
+      <p class="hint">Product code and page slug are created automatically if you leave them empty. There are no price fields — prices are confirmed on WhatsApp.</p>
+      <form id="productForm">
+        <input type="hidden" id="fId">
+        <div class="form-grid">
+          <div class="field"><label>Product name *</label><input id="fName" required placeholder="e.g. Panadol Extra"></div>
+          <div class="field"><label>Brand *</label><input id="fBrand" required placeholder="e.g. GSK"></div>
+          <div class="field"><label>Category *</label><select id="fCategory"></select></div>
+          <div class="field"><label>Form</label><input id="fForm" placeholder="e.g. Tablets, Syrup, Gel"></div>
+          <div class="field"><label>Strength / Contents</label><input id="fStrength" placeholder="e.g. Paracetamol 500mg"></div>
+          <div class="field"><label>Pack size</label><input id="fPack" placeholder="e.g. 100 Tablets (10 strips of 10)"></div>
+          <div class="field"><label>Product code (SKU)</label><input id="fSku" placeholder="Auto — e.g. HB-031"></div>
+          <div class="field"><label>Stock status</label><select id="fStock"><option value="in">In Stock</option><option value="low">Low Stock</option><option value="out">Out of Stock</option></select></div>
+          <div class="field full"><label>Product image — upload (optional)</label><input type="file" id="fImageFile" accept="image/*"><p class="hint" style="margin:5px 0 0" id="imgHint">If no image is uploaded, the site uses assets/images/products/&lt;slug&gt;.webp</p><input type="hidden" id="fImg"></div>
+          <div class="field full"><label>Short description *</label><textarea id="fDesc" rows="3" required placeholder="What the product is and who it is for"></textarea></div>
+          <div class="field full"><label>Commonly used for (one per line)</label><textarea id="fUses" rows="3" placeholder="Headache & migraine&#10;Body and muscle pain"></textarea></div>
+          <div class="field full"><label>How to use</label><textarea id="fDirections" rows="2"></textarea></div>
+          <div class="field"><label>Storage</label><input id="fStorage" placeholder="e.g. Store below 30°C"></div>
+          <div class="field"><label>Caution / note</label><input id="fCaution" placeholder="e.g. Keep out of reach of children"></div>
+          <div class="field"><label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="fRx" style="width:auto"> Prescription required</label></div>
+          <div class="field"><label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="fFeatured" style="width:auto"> Show in Featured on homepage</label></div>
+        </div>
+        <div class="admin-actions">
+          <button class="btn btn-green" type="submit">Save Product</button>
+          <button class="btn btn-outline" type="button" id="cancelEditBtn">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="admin-card">
+      <h2>Stock alerts</h2>
+      <p class="hint">Products running low or out of stock — the ones to reorder first.</p>
+      <div id="alertsList"></div>
+    </div>
+
+    <div class="admin-card">
+      <h2>Orders from this device</h2>
+      <p class="hint">Orders placed from this browser are listed here so the counter can track them. (A static website cannot collect orders from other customers' phones — those arrive on the store's WhatsApp as usual.)</p>
+      <div id="ordersList"></div>
+    </div>
+
+    <div class="admin-card">
+      <h2>Store settings</h2>
+      <p class="hint">The WhatsApp number is used by every order button on the site. Use the full number with country code, digits only (e.g. 923433009226).</p>
+      <form id="settingsForm">
+        <div class="form-grid">
+          <div class="field"><label>WhatsApp number (with country code)</label><input id="sWhatsapp"></div>
+          <div class="field"><label>Phone display</label><input id="sPhone"></div>
+          <div class="field full"><label>Store address</label><input id="sAddress"></div>
+          <div class="field"><label>Facebook URL</label><input id="sFacebook"></div>
+          <div class="field"><label>Instagram URL</label><input id="sInstagram"></div>
+          <div class="field"><label>TikTok URL</label><input id="sTiktok"></div>
+          <div class="field"><label>Website URL</label><input id="sSite"></div>
+          <div class="field"><label>Opening time</label><input id="sOpenTime" type="time"></div>
+          <div class="field"><label>Closing time</label><input id="sCloseTime" type="time"></div>
+          <div class="field"><label>Accent colour</label><select id="sAccent"><option value="green">Green (logo)</option><option value="navy">Navy</option><option value="teal">Teal</option><option value="maroon">Maroon</option></select></div>
+          <div class="field"><label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="sAnnounceOn" style="width:auto"> Show announcement bar on the site</label></div>
+          <div class="field full"><label>Announcement text</label><input id="sAnnounce" placeholder="e.g. Free delivery in Gulistan Society this week on orders confirmed before 8 PM"></div>
+        </div>
+        <div class="admin-actions"><button class="btn btn-navy" type="submit">Save Settings</button></div>
+      </form>
+    </div>
+
+    <div class="admin-card">
+      <h2>Catalog data</h2>
+      <p class="hint">Export downloads the full product list as a JSON file (your backup, or the file to make changes permanent in the site code). Import replaces the current list with a JSON file. Reset removes all admin changes and brings back the original 30 demo products.</p>
+      <div class="admin-actions">
+        <button class="btn btn-outline" id="exportBtn" type="button"><span class="ic"><svg><use href="#i-download"/></svg></span> Export Catalog (JSON)</button>
+        <label class="btn btn-outline" style="cursor:pointer"><span class="ic"><svg><use href="#i-upload"/></svg></span> Import Catalog<input type="file" id="importFile" accept=".json,application/json" hidden></label>
+        <button class="btn btn-outline" id="resetBtn" type="button" style="color:var(--red);border-color:#efc4c1">Reset to Demo Catalog</button>
+      </div>
+      <p class="hint" id="dataMsg" style="margin-top:12px"></p>
+    </div>
+
+    <p style="color:var(--muted);font-size:12.5px;padding-bottom:34px">Note: this admin panel works without a server, so its changes are stored in this browser only (localStorage). Anyone with the password on this device can manage the catalog here. For a multi-user/permanent setup, the exported JSON is merged into the site files.</p>
+  </div>
+</div>
+
+<div id="toast" role="status"></div>
+<script src="assets/js/products.js"></script>
+<script src="assets/js/icons.js"></script>
+<script src="assets/js/admin.js"></script>
+</body>
+</html>

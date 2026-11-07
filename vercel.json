@@ -1,0 +1,1 @@
+{"rewrites":[{"destination":"/admin.html","source":"/admin"},{"destination":"/admin.html","source":"/admin/"},{"destination":"/shop.html","source":"/shop"},{"destination":"/shop.html","source":"/shop/"},{"destination":"/about.html","source":"/about"},{"destination":"/contact.html","source":"/contact"}]}
