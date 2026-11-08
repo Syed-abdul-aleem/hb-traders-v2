@@ -288,7 +288,7 @@ if(sideCats){
 }
 const brandSel=$("#brandSelect");
 if(brandSel){
-  const brands=["All",...new Set(PRODUCTS.map(p=>p.brand))].sort();
+  const brands=["All",...[...new Set(PRODUCTS.map(p=>p.brand))].sort()];
   brandSel.innerHTML=brands.map(b=>`<option ${b==="All"?"":""} value="${b}">${b==="All"?"All brands":b}</option>`).join("");
   brandSel.addEventListener("change",()=>{brandFilter=brandSel.value;renderCatalog()});
 }

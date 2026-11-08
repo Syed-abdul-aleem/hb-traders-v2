@@ -577,91 +577,91 @@ header.site{border-bottom:1px solid var(--line);box-shadow:0 4px 18px rgba(21,37
 #toCheckout:hover{background:var(--navy-dark)}
 #cartStep2 .checkout-form{margin-top:2px}
 
-/* ---------- Responsive hardening round (2026-11-08): Android + all devices ----------
-   Append-only overrides. Fixes found in audit:
-   - admin stats fell back to 3 cramped columns on small phones (cascade order)
-   - shop sidebar stacked full-length above products on mobile (long scroll)
-   - admin table columns crushed instead of scrolling
-   - small input text caused focus-zoom on phones; modal/drawer ignored
-     Android browser chrome (dvh) and gesture safe areas              */
+/* ---------- Responsive fix round 2 (headless-Chrome cross-check 2026-11-07) ---------- */
+/* tablet header was overcrowded: header search now hides at <=960px (shop/hero search still work) */
+@media(max-width:960px){
+  .header-search{display:none}
+  .header-in{gap:14px}
+  /* shop sidebar becomes a compact filter panel instead of a full-height card */
+  .sidebar{display:grid;grid-template-columns:1fr 1fr;gap:0 6px;padding-bottom:8px}
+  .sidebar>h3{grid-column:1/-1;padding-bottom:4px}
+  .side-cats{grid-column:1/-1;display:flex;overflow-x:auto;gap:8px;padding:2px 12px 12px;scrollbar-width:none}
+  .side-cats::-webkit-scrollbar{display:none}
+  .side-cats a{border:1px solid var(--line);border-radius:99px;padding:7px 13px;white-space:nowrap;margin:0;background:#fff}
+  .side-cats a .n{display:none}
+  .side-cats a.active{border-color:var(--green);background:var(--green-soft);color:var(--green-dark)}
+  .sidebar .side-block{border-top:0;padding:2px 10px 8px}
+  .sidebar .side-block:last-child{grid-column:1/-1}
+  .sidebar .side-block h3{padding:8px 4px 6px}
+  .sidebar .side-block p{font-size:13px}
+  .sidebar label{padding:6px 4px}
+  .sidebar select{margin:4px 0 8px;width:100%}
+}
+/* top strip: phone line was clipping at tablet widths — hide it earlier, tighten on phones */
+@media(max-width:860px){.topstrip .ts-hide{display:none}}
+.topstrip .ts{min-width:0}
+@media(max-width:760px){.topstrip{font-size:11.5px}.topstrip .container{padding:6px 0;gap:3px 10px}}
+/* kicker icon rendered as a white blob at small size — remove it */
+.hero-panel .kicker .ic{display:none}
+/* cart quantity stepper should hug its buttons, not stretch across the row */
+.ci-qty{width:max-content}
+/* long spec text must wrap inside tables; grid children must be allowed to shrink */
+.fact-table td,.spec-table td{overflow-wrap:anywhere}
+.cat-index a>*,.ess-row>*,.grid>*{min-width:0}
+.cat-index small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* phone product cards: code + stock stack instead of wrapping mid-word; buttons stay on one line */
+@media(max-width:760px){
+  .card .sku-row{flex-direction:column;align-items:flex-start;gap:4px}
+  .card-actions{gap:6px}
+  .card-actions .add-btn{white-space:nowrap;font-size:12.5px;padding:10px 3px}
+  .card-actions .wa-btn{width:38px;flex-shrink:0}
+}
+
+/* ---------- Responsive complement round 3 (2026-11-08, on top of round 2) ----------
+   Only the pieces round 2 does not cover; round-2 rules are left as they are:
+   - wide-screen hero fix (panel padding formula squeezed the 400px column
+     above ~1400px — fixed in the base .hero-panel rule above)
+   - popup/drawer use dvh + gesture safe areas; popup is a bottom sheet on phones
+   - admin stats/table on small screens; 16px form text stops phone focus-zoom */
 html{-webkit-text-size-adjust:100%}
 body{overflow-x:clip}
 @supports not (overflow:clip){body{overflow-x:hidden}}
 *{-webkit-tap-highlight-color:transparent}
 a,button,input,select,textarea,label{touch-action:manipulation}
-img,svg,iframe,video{max-width:100%}
 .modal{max-height:92dvh}
 .drawer{height:100dvh}
 .wa-float{bottom:calc(18px + env(safe-area-inset-bottom))}
 .drawer-foot{padding-bottom:calc(19px + env(safe-area-inset-bottom))}
 #toast{bottom:calc(26px + env(safe-area-inset-bottom))}
 .admin-table{min-width:640px}
-.fact-table td,.spec-table td,.prose p{overflow-wrap:break-word}
 
-/* tablets / small laptops */
-@media(max-width:1100px){
-  .header-in{gap:14px}
-  .logo .lt b{font-size:20px}
-}
-
-/* phones + small tablets */
 @media(max-width:760px){
   section{padding:36px 0}
-  .container{width:92%}
-  /* top strip: address on its own line, phone/badge below it */
-  .topstrip .container{gap:4px 16px;padding:8px 0}
-  .topstrip .ts:first-child{flex:1 1 100%}
-  /* header: tighter, every tap target at least 44px tall */
-  .header-in{gap:10px;padding:10px 0}
-  .logo{gap:9px}
-  .logo img{width:44px;height:44px}
-  .header-actions{gap:8px}
-  .wa-head-btn,.cart-btn{min-height:44px;padding:10px 12px}
   .mobile-nav a{padding:12px 4%;border-bottom:1px solid var(--line)}
   .mobile-nav a:last-child{border-bottom:0}
-  /* hero */
-  .hero{padding:12px 4% 2px}
-  .hero-panel h1{font-size:26px}
+  .wa-head-btn,.cart-btn{min-height:44px}
   .hero-search button{padding:0 14px}
-  .hero-services div{padding:10px 0;font-size:13.5px}
-  /* no focus-zoom on phones: form text at 16px */
   input,select,textarea{font-size:16px}
   .header-search input,.hero-search input{font-size:16px}
-  /* product cards: comfortable 2-up with full-width tap targets */
   .card-actions .add-btn,.card-actions .wa-btn{min-height:44px}
   .detail-link{display:block;padding:8px 0 2px}
-  .cat-index a{padding:14px 14px;gap:12px}
-  /* shop: categories become a swipeable chip row, products come first-screen sooner */
-  .sidebar{padding-bottom:6px}
-  .sidebar h3{padding:14px 16px 8px}
-  .sidebar .side-cats{display:flex;gap:8px;overflow-x:auto;padding:2px 12px 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-  .sidebar .side-cats::-webkit-scrollbar{display:none}
-  .sidebar .side-cats a{white-space:nowrap;border:1px solid var(--line);border-radius:99px;margin:0;padding:8px 14px;background:#fff;flex-shrink:0;gap:7px}
-  .sidebar .side-cats a.active{background:var(--green-soft)}
-  .sidebar label{padding:8px 16px;min-height:40px}
-  .sidebar select{margin:4px 16px 10px;width:calc(100% - 32px);min-height:46px}
-  .toolbar{gap:9px}
-  .toolbar .search-box{flex:1 1 100%;min-height:46px}
-  .toolbar select{flex:1 1 auto;min-width:0;min-height:46px}
   /* product popup becomes a bottom sheet on phones */
   .modal-wrap{padding:0;align-items:flex-end}
   .modal{border-radius:20px 20px 0 0;max-height:94dvh;width:100%}
   .qty-ctrl button{width:44px;height:48px}
   .qty-row .add-btn{min-height:48px}
-  /* admin */
+  .toolbar .search-box{min-height:46px}
+  .toolbar select{min-height:46px}
   .admin-card{padding:17px 15px}
-  .admin-top .sp{margin-left:0}
   .admin-actions .btn,.admin-actions .mini-btn{min-height:44px}
   .bulk-bar select{flex:1 1 150px;min-height:42px}
   .bulk-bar .mini-btn{min-height:42px}
   .login-wrap{margin:34px auto;padding:24px 20px}
-  .footer-grid{padding:38px 0 26px}
 }
-
-/* small Android phones */
 @media(max-width:480px){
   .admin-stats{grid-template-columns:repeat(2,1fr);gap:10px}
   .stat{padding:14px}
+  .stat b{font-size:23px}
   .hero-photo{min-height:215px;height:215px}
   .hero-photo .photo-tag{left:10px;right:10px;bottom:10px;max-width:none;padding:10px 12px}
   .fact-table th{width:94px}
@@ -671,10 +671,10 @@ img,svg,iframe,video{max-width:100%}
   .rx-band{padding:22px 18px}
   .how-row{grid-template-columns:48px 1fr;padding:16px}
   .how-row .num{font-size:22px}
-  .tool-result{font-size:13.5px}
+  .drawer{width:100vw;border-radius:0}
+  .checkout-form input,.checkout-form textarea{font-size:16px}
+  .field input,.field select,.field textarea{font-size:16px}
 }
-
-/* very small phones (320-360px) */
 @media(max-width:360px){
   .grid{gap:9px}
   .card h3{font-size:14px}
@@ -683,17 +683,28 @@ img,svg,iframe,video{max-width:100%}
   .card-body{padding:10px}
   .logo .lt b{font-size:17px}
   .logo img{width:38px;height:38px}
-  .wa-head-btn,.cart-btn{padding:9px 10px}
   .need-chips a{padding:8px 12px;font-size:13px}
   .ess-row{grid-template-columns:52px 1fr;gap:11px}
   .ess-row img{width:52px;height:52px}
   .cat-index a{grid-template-columns:38px 1fr auto}
   .cat-index .cic{width:38px;height:38px}
 }
-
-/* landscape phones: keep hero + popup compact */
 @media(max-width:960px) and (orientation:landscape) and (max-height:500px){
   .hero-photo{min-height:190px;height:190px}
   .modal-img img{max-height:170px}
   .modal{max-height:96dvh}
+}
+
+/* ---------- Round 3b: small-phone overflow found in re-test (2026-11-08) ----------
+   The hero panel is a grid item: it would not shrink below the hero search
+   form's min-content (~375px), so on 320-360px phones the panel stuck out.
+   Header row was also ~6px too wide at 320px.                              */
+.hero .container>*{min-width:0}
+.hero-panel{min-width:0}
+.hero-search{min-width:0}
+@media(max-width:380px){
+  .header-in{gap:8px}
+  .logo{gap:7px}
+  .header-actions{gap:6px}
+  .wa-head-btn,.cart-btn{padding:9px 9px}
 }
