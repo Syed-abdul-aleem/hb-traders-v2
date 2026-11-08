@@ -10,7 +10,7 @@ const DEFAULT_SETTINGS = {
   facebook: "https://www.facebook.com/hbtraders628",
   instagram: "https://www.instagram.com/hb_traders7",
   tiktok: "https://www.tiktok.com/@hbtraders7",
-  site: "https://hbtraders.shop/",
+  site: "https://hb-traders-v2.vercel.app/",
   announcement: "",
   announcementOn: false,
   openTime: "09:00",
