@@ -708,3 +708,12 @@ a,button,input,select,textarea,label{touch-action:manipulation}
   .header-actions{gap:6px}
   .wa-head-btn,.cart-btn{padding:9px 9px}
 }
+
+/* ---------- Developer credit (Aleem's standard footer, added 2026-11-08) ---------- */
+.dev-credit{border-top:1px solid rgba(255,255,255,.15);padding:13px 0 20px;text-align:center;font-size:12.5px;color:#b9cbdd}
+.dev-credit b{color:#fff}
+.dev-credit a{color:#5fd383;font-weight:600;display:inline;padding:0}
+.dev-credit a:hover{color:#fff}
+.dev-credit-admin{text-align:center;color:var(--muted);font-size:12.5px;padding:4px 3% 26px;margin:0}
+.dev-credit-admin b{color:var(--navy-dark)}
+.dev-credit-admin a{color:var(--green-dark);font-weight:600}

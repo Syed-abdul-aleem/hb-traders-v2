@@ -1,4 +1,4 @@
-# HB Traders — Pharmacy Website v2 (hbtraders.shop)
+# HB Traders — Pharmacy Website v2 (hb-traders-v2.vercel.app)
 
 New theme built on the store's own logo: bright green + navy, solid icons
 throughout, dense real-pharmacy layout. **No prices anywhere on the site** —
@@ -52,8 +52,7 @@ with the bill. Cart is saved in the visitor's browser.
 - Address: Inside Gulistan Society, Near MMC Laghari Gate, Dera Ismail Khan
 - Facebook: facebook.com/hbtraders628 · Instagram: @hb_traders7 · TikTok: @hbtraders7
 
-Note: the supplied logo reads "HBTraders.pk" while the site domain given was
-hbtraders.shop — the logo artwork is used exactly as supplied.
+Note: the supplied logo reads "HBTraders.pk" — the logo artwork is used exactly as supplied.
 
 ## Feature round (added later on 2026-11-07)
 
